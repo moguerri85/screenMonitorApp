@@ -1,5 +1,3 @@
-# Contenuto del README.md in italiano
-
 # Screen Monitor App
 
 ## Descrizione
