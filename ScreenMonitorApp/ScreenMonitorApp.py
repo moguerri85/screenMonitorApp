@@ -22,7 +22,7 @@ from screeninfo import get_monitors
 # URL dell'API delle release di GitHub
 GITHUB_RELEASES_API_URL = "https://api.github.com/repos/moguerri85/screenMonitorApp/releases/latest"
 
-CURRENT_VERSION = "1.1.0"  # Versione corrente dell'app
+CURRENT_VERSION = "1.1.1"  # Versione corrente dell'app
 
 # Definisci le proprietà del font
 font_family = "Arial"
