@@ -357,6 +357,9 @@ class ScreenMonitorApp:
             self.text_area.yview(tk.END)  # Scorri l'area di testo verso il basso
 
     def save_settings(self):
+        # Ottieni la directory principale dell'utente
+        appdata_path = os.path.join(os.getenv('APPDATA'), 'ScreenMonitorApp')
+        settings_path = os.path.join(appdata_path, 'settings.ini')
         config = configparser.ConfigParser()
         config['Settings'] = {
             'monitor_index': self.monitor_index.get(),
@@ -364,7 +367,7 @@ class ScreenMonitorApp:
             'tabs_to_navigate': self.tabs_to_navigate.get(),
             'rights_to_navigate': self.rights_to_navigate.get()
         }
-        with open('settings.ini', 'w') as configfile:
+        with open(settings_path, 'w') as configfile:
             config.write(configfile)
         self.label.config(text="Impostazioni salvate con successo.")
 
@@ -389,16 +392,19 @@ class ScreenMonitorApp:
         self.text_area.yview(tk.END)  # Scorri l'area di testo verso il basso
         
     def load_settings(self):
+        # Ottieni la directory principale dell'utente
+        appdata_path = os.path.join(os.getenv('APPDATA'), 'ScreenMonitorApp')
+        settings_path = os.path.join(appdata_path, 'settings.ini')
         config = configparser.ConfigParser()
         try:
-            if not os.path.exists('settings.ini'):
+            if not os.path.exists(settings_path):
                 config['Settings'] = {'monitor_index': '0', 'sensitivity': '500000', 'tabs_to_navigate': '0', 'rights_to_navigate': '1'}
 
                 self.write_file(config)
                 self.label.config(text="File ini creato.")
                 self.load_settings()
             else:    
-                config.read('settings.ini')
+                config.read(settings_path)
                 self.monitor_index.set(config.getint('Settings', 'monitor_index', fallback=1))
                 self.sensitivity.set(config.getfloat('Settings', 'sensitivity', fallback=500000))
                 self.tabs_to_navigate.set(config.getint('Settings', 'tabs_to_navigate', fallback=0))
@@ -409,7 +415,11 @@ class ScreenMonitorApp:
             self.label.config(text="Nessuna impostazione trovata. Utilizzando le impostazioni predefinite.")
 
     def write_file(self, config):
-        with open("settings.ini", "w") as file:
+        # Ottieni la directory principale dell'utente
+        user_home = os.path.expanduser("~")
+        settings_dir = os.path.join(user_home, 'ScreenMonitorApp')
+        settings_path = os.path.join(settings_dir, 'settings.ini')
+        with open(settings_path, "w") as file:
             config.write(file)
 
     def check_for_updates(self):
@@ -463,7 +473,30 @@ class ScreenMonitorApp:
 
     def pulisci_messaggi(self):
         self.text_area.delete(1.0, tk.END)  # Elimina tutto il testo
+
+def ensure_settings_file():
+    # Ottieni la directory principale dell'utente
+    appdata_path = os.path.join(os.getenv('APPDATA'), 'ScreenMonitorApp')
+    settings_path = os.path.join(appdata_path, 'settings.ini')
+
+    # Se il file non esiste, crearlo con valori predefiniti
+    if not os.path.exists(settings_path):
+        config = configparser.ConfigParser()
+        config['Settings'] = {'monitor_index': '0', 'sensitivity': '500000', 'tabs_to_navigate': '0', 'rights_to_navigate': '1'}
+        
+        # Creare la cartella se non esiste
+        os.makedirs(appdata_path, exist_ok=True)
+        
+        # Scrivere il file
+        with open(settings_path, 'w') as configfile:
+            config.write(configfile)
+            
+        print(f"File di configurazione creato: {settings_path}")
+    else:
+        print(f"File di configurazione esistente: {settings_path}")
+
 if __name__ == "__main__":
     root = tk.Tk()
+    ensure_settings_file()
     app = ScreenMonitorApp(root)
     root.mainloop()
