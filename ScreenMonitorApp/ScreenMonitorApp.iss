@@ -1,6 +1,6 @@
 [Setup]
 AppName=ScreenMonitorApp
-AppVersion=1.1.0
+AppVersion=1.1.1
 DefaultDirName={pf}\ScreenMonitorApp
 DefaultGroupName=ScreenMonitorApp
 PrivilegesRequired=admin  
