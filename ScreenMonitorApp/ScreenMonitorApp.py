@@ -396,14 +396,7 @@ class ScreenMonitorApp:
         appdata_path = os.path.join(os.getenv('APPDATA'), 'ScreenMonitorApp')
         settings_path = os.path.join(appdata_path, 'settings.ini')
         config = configparser.ConfigParser()
-        try:
-            if not os.path.exists(settings_path):
-                config['Settings'] = {'monitor_index': '0', 'sensitivity': '500000', 'tabs_to_navigate': '0', 'rights_to_navigate': '1'}
-
-                self.write_file(config)
-                self.label.config(text="File ini creato.")
-                self.load_settings()
-            else:    
+        try:    
                 config.read(settings_path)
                 self.monitor_index.set(config.getint('Settings', 'monitor_index', fallback=1))
                 self.sensitivity.set(config.getfloat('Settings', 'sensitivity', fallback=500000))
@@ -413,14 +406,6 @@ class ScreenMonitorApp:
                 self.label.config(text="Impostazioni caricate.")
         except FileNotFoundError:
             self.label.config(text="Nessuna impostazione trovata. Utilizzando le impostazioni predefinite.")
-
-    def write_file(self, config):
-        # Ottieni la directory principale dell'utente
-        user_home = os.path.expanduser("~")
-        settings_dir = os.path.join(user_home, 'ScreenMonitorApp')
-        settings_path = os.path.join(settings_dir, 'settings.ini')
-        with open(settings_path, "w") as file:
-            config.write(file)
 
     def check_for_updates(self):
         try:

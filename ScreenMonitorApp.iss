@@ -12,10 +12,10 @@ SolidCompression=yes
 
 [Files]
 ; Copia tutti i file generati da PyInstaller
-Source: "dist\ScreenMonitorApp\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "build\exe.win-amd64-3.12\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Assicurati di includere l'icona
-Source: "icon.ico"; DestDir: "{app}"
+Source: "ScreenMonitorApp\icon.ico"; DestDir: "{app}"
 
 [UninstallDelete]
 ; Elimina il file settings.ini da AppData durante la disinstallazione
